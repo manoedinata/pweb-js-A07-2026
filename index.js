@@ -31,6 +31,9 @@ const PRODUCTS_API_URL = 'https://dummyjson.com/products';
 const productListContainer = document.getElementById('product-list');
 
 let allProducts = [];
+let displayedProducts = [];
+let currentPage = 1;
+const PRODUCTS_PER_PAGE = 8;
 
 async function fetchProducts() {
     try {
@@ -50,7 +53,9 @@ async function fetchProducts() {
 }
 
 function renderProducts(products) {
-    productListContainer.innerHTML = products.map(createProductCard).join('');
+    displayedProducts = products;
+    currentPage = 1;
+    renderCurrentPage();
 }
 
 function createProductCard(product) {
@@ -185,3 +190,23 @@ productListContainer.addEventListener('click', function (event) {
 });
 
 updateCartSummary();
+
+// ===== Load More / Pagination =====
+
+const loadMoreButton = document.getElementById('load-more-button');
+
+function renderCurrentPage() {
+    const visibleProducts = displayedProducts.slice(0, currentPage * PRODUCTS_PER_PAGE);
+    productListContainer.innerHTML = visibleProducts.map(createProductCard).join('');
+    updateLoadMoreButton();
+}
+
+function updateLoadMoreButton() {
+    const hasMore = currentPage * PRODUCTS_PER_PAGE < displayedProducts.length;
+    loadMoreButton.style.display = hasMore ? '' : 'none';
+}
+
+loadMoreButton.addEventListener('click', function () {
+    currentPage += 1;
+    renderCurrentPage();
+});
