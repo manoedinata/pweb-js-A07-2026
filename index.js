@@ -86,7 +86,7 @@ function createProductCard(product) {
             <div class="product-category">${product.category}</div>
             <h3 class="product-name">${product.title}</h3>
             <div class="product-price">$${product.price}</div>
-            <div class="product-rating">⭐ ${product.rating}</div>
+            <div class="product-rating">★ ${product.rating}</div> <!-- Bintang diganti di sini -->
             <div class="product-discount">-${product.discountPercentage}%</div>
             <button class="view-detail-btn">Lihat Detail</button>
             <button class="add-to-cart-btn">Tambah ke Keranjang</button>
@@ -337,7 +337,7 @@ function openProductModal(productId) {
   modalTitle.textContent = product.title;
   modalBrand.textContent = `Brand: ${product.brand || "-"}`;
   modalPrice.textContent = `$${product.price}`;
-  modalRating.textContent = `⭐ ${product.rating}`;
+  modalRating.textContent = `★ ${product.rating}`;
   modalStock.textContent = `Stok tersedia: ${product.stock}`;
   modalDescription.textContent = product.description;
 

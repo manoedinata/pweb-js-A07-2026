@@ -3,29 +3,96 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Emily Store - Katalog</title>
 
+    <link rel="stylesheet" href="index.css" />
     <script src="index.js" defer></script>
   </head>
 
   <body>
-    <h1>
-      Hallo,
-      <span id="username-display"></span>!
-    </h1>
+    <!-- HEADER -->
+    <header class="main-header">
+      <div class="header-greeting">
+        <h1>Hallo, <span id="username-display"></span>!</h1>
+        <p>Selamat belanja di toko Blok-U Store</p>
+      </div>
+      <button id="logout-button">Log out</button>
+    </header>
 
-    <!-- logout -->
-    <button id="logout-button">Log out</button>
-
-    <!-- cart summary -->
-    <div id="cart-summary">
-      <span>Keranjang: <span id="cart-badge">0</span></span>
-      <span>Total: <span id="cart-total">$0.00</span></span>
+    <!-- DIV KERANJANG UNTUK MOBILE -->
+    <div class="cart-container">
+      <div id="cart-summary">
+        <span>Keranjang: <span id="cart-badge">0</span></span>
+        <span>Total: <span id="cart-total">$0.00</span></span>
+      </div>
+      <div id="cart-items"></div>
     </div>
 
-    <div id="cart-items"></div>
-
+    <!-- MAIN CONTENT -->
     <main>
+      <section class="hero-banner">
+        <div class="hero-content">
+          <div class="hero-badge">LIMITED TIME ONLY</div>
+
+          <h2 class="hero-title">Selamat datang di Blok U Store!</h2>
+          <p class="hero-subtitle">
+            Special offer last year! Promo hingga diskon 50% untuk produk
+            kosmetik pilihan.
+          </p>
+
+          <div class="hero-features">
+            <div class="feature-item">
+              <span class="feature-icon">✦</span>
+              <div class="feature-text">
+                <strong>Best Prices</strong>
+                <span>Guaranteed</span>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">❤︎</span>
+              <div class="feature-text">
+                <strong>Secure</strong>
+                <span>Payments</span>
+              </div>
+            </div>
+            <div class="feature-item">
+              <span class="feature-icon">➤</span>
+              <div class="feature-text">
+                <strong>Fast Delivery</strong>
+                <span>Worldwide</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="hero-buttons">
+            <button
+              class="hero-btn-primary"
+              onclick="
+                document
+                  .getElementById('product-catalog')
+                  .scrollIntoView({ behavior: 'smooth' })
+              "
+            >
+              Beli Sekarang &rarr;
+            </button>
+          </div>
+        </div>
+
+        <div class="hero-image-container">
+          <div class="discount-circle">
+            <span class="up-to">UP TO</span>
+            <span class="percent">50%</span>
+            <span class="off">OFF</span>
+          </div>
+          <img
+            src="assets/produk.png"
+            alt="Koleksi Kosmetik"
+            class="hero-image"
+          />
+        </div>
+      </section>
+
+      <!-- Katalog Produk -->
       <section id="product-catalog">
         <div class="search-bar">
           <input
@@ -47,9 +114,7 @@
           </select>
         </div>
 
-        <div id="product-list" class="product-grid">
-          <!-- Product cards dirender di sini secara dinamis oleh index.js -->
-        </div>
+        <div id="product-list" class="product-grid"></div>
 
         <button id="load-more-button">Load More ...</button>
       </section>
