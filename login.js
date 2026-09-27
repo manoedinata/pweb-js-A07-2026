@@ -18,6 +18,15 @@ function getUserData(users, username, password) {
     return users.find(user => user.username === username && user.password === password);
 }
 
+function toggleLoadingIndicator(show) {
+    const loadingIndicator = document.querySelector('.loading');
+    if (show) {
+        loadingIndicator.classList.remove('hidden');
+    } else {
+        loadingIndicator.classList.add('hidden');
+    }
+}
+
 var userData = [];
 const loginForm = document.getElementById('login-form');
 
@@ -32,14 +41,23 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
+    // toggleLoadingIndicator(true);
     fetchUsers().then(users => {
+        if (users.length === 0) {
+            alert('Gagal mengambil data user.');
+            return;
+        }
+
         userData = users;
+        // toggleLoadingIndicator(false);
     });
 });
 
 
 loginForm.addEventListener('submit', function (event) {
     event.preventDefault();
+
+    toggleLoadingIndicator(true);
 
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
@@ -57,4 +75,7 @@ loginForm.addEventListener('submit', function (event) {
         alert('Invalid username or password.');
     }
 
+    toggleLoadingIndicator(false);
+
+    window.location.href = 'index.html';
 });
