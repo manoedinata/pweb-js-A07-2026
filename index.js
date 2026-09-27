@@ -210,3 +210,72 @@ loadMoreButton.addEventListener('click', function () {
     currentPage += 1;
     renderCurrentPage();
 });
+
+// ===== Detail Produk Modal (Event Delegation) =====
+
+const productModal = document.getElementById('product-modal');
+const modalThumbnail = document.getElementById('modal-thumbnail');
+const modalCategory = document.getElementById('modal-category');
+const modalTitle = document.getElementById('modal-title');
+const modalBrand = document.getElementById('modal-brand');
+const modalPrice = document.getElementById('modal-price');
+const modalRating = document.getElementById('modal-rating');
+const modalStock = document.getElementById('modal-stock');
+const modalDescription = document.getElementById('modal-description');
+const modalCloseButton = document.getElementById('modal-close-button');
+const modalAddToCartButton = document.getElementById('modal-add-to-cart-button');
+
+let activeModalProductId = null;
+
+function openProductModal(productId) {
+    const product = allProducts.find(function (item) {
+        return item.id === productId;
+    });
+
+    if (!product) return;
+
+    activeModalProductId = product.id;
+
+    modalThumbnail.src = product.thumbnail;
+    modalThumbnail.alt = product.title;
+    modalCategory.textContent = product.category;
+    modalTitle.textContent = product.title;
+    modalBrand.textContent = `Brand: ${product.brand || '-'}`;
+    modalPrice.textContent = `$${product.price}`;
+    modalRating.textContent = `⭐ ${product.rating}`;
+    modalStock.textContent = `Stok tersedia: ${product.stock}`;
+    modalDescription.textContent = product.description;
+
+    productModal.style.display = 'flex';
+}
+
+function closeProductModal() {
+    productModal.style.display = 'none';
+    activeModalProductId = null;
+}
+
+// Event delegation: satu listener di parent (#product-list) menangani klik
+// semua kartu produk, termasuk yang dirender ulang oleh search/pagination.
+productListContainer.addEventListener('click', function (event) {
+    if (event.target.closest('.add-to-cart-btn')) return;
+
+    const productCard = event.target.closest('.product-card');
+    if (!productCard) return;
+
+    const productId = Number(productCard.dataset.id);
+    openProductModal(productId);
+});
+
+modalCloseButton.addEventListener('click', closeProductModal);
+
+productModal.addEventListener('click', function (event) {
+    if (event.target === productModal) {
+        closeProductModal();
+    }
+});
+
+modalAddToCartButton.addEventListener('click', function () {
+    if (activeModalProductId !== null) {
+        addToCart(activeModalProductId);
+    }
+});
