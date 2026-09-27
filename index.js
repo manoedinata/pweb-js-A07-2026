@@ -70,6 +70,7 @@ function createProductCard(product) {
             <div class="product-price">$${product.price}</div>
             <div class="product-rating">⭐ ${product.rating}</div>
             <div class="product-discount">-${product.discountPercentage}%</div>
+            <button class="view-detail-btn">Lihat Detail</button>
             <button class="add-to-cart-btn">Tambah ke Keranjang</button>
         </div>
     `;
