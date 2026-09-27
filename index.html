@@ -1,71 +1,74 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
 
     <script src="index.js" defer></script>
-</head>
+  </head>
 
-<body>
+  <body>
     <h1>
-        Halo,
-        <span id="username-display"></span>!
+      Hallo,
+      <span id="username-display"></span>!
     </h1>
 
     <!-- logout -->
-    <button id="logout-button">Logout</button>
+    <button id="logout-button">Log out</button>
 
     <!-- cart summary -->
     <div id="cart-summary">
-        <span>Keranjang: <span id="cart-badge">0</span></span>
-        <span>Total: <span id="cart-total">$0.00</span></span>
+      <span>Keranjang: <span id="cart-badge">0</span></span>
+      <span>Total: <span id="cart-total">$0.00</span></span>
     </div>
 
+    <div id="cart-items"></div>
+
     <main>
-        <section id="product-catalog">
-            <div class="search-bar">
-                <input type="text" id="search-input" placeholder="Cari nama produk atau kategori...">
+      <section id="product-catalog">
+        <div class="search-bar">
+          <input
+            type="text"
+            id="search-input"
+            placeholder="Cari nama produk atau kategori..."
+          />
 
-                <select id="category-filter">
-                    <option value="all">Semua Kategori</option>
-                </select>
+          <select id="category-filter">
+            <option value="all">Semua Kategori</option>
+          </select>
 
-                <select id="sort-select">
-                    <option value="default">Urutkan</option>
-                    <option value="price-asc">Harga: Termurah</option>
-                    <option value="price-desc">Harga: Termahal</option>
-                    <option value="rating-desc">Rating: Tertinggi</option>
-                    <option value="rating-asc">Rating: Terendah</option>
-                </select>
-            </div>
+          <select id="sort-select">
+            <option value="default">Urutkan</option>
+            <option value="price-asc">Harga: Termurah</option>
+            <option value="price-desc">Harga: Termahal</option>
+            <option value="rating-desc">Rating: Tertinggi</option>
+            <option value="rating-asc">Rating: Terendah</option>
+          </select>
+        </div>
 
-            <div id="product-list" class="product-grid">
-                <!-- Product cards dirender di sini secara dinamis oleh index.js -->
-            </div>
+        <div id="product-list" class="product-grid">
+          <!-- Product cards dirender di sini secara dinamis oleh index.js -->
+        </div>
 
-            <button id="load-more-button">Load More</button>
-        </section>
+        <button id="load-more-button">Load More ...</button>
+      </section>
     </main>
 
     <!-- product detail modal -->
-    <div id="product-modal" style="display: none;">
-        <div class="modal-content">
-            <button id="modal-close-button">&times;</button>
-            <img id="modal-thumbnail" src="" alt="">
-            <div id="modal-category"></div>
-            <h2 id="modal-title"></h2>
-            <div id="modal-brand"></div>
-            <div id="modal-price"></div>
-            <div id="modal-rating"></div>
-            <div id="modal-stock"></div>
-            <p id="modal-description"></p>
-            <button id="modal-add-to-cart-button">Tambah ke Keranjang</button>
-        </div>
+    <div id="product-modal" style="display: none">
+      <div class="modal-content">
+        <button id="modal-close-button">&times;</button>
+        <img id="modal-thumbnail" src="" alt="" />
+        <div id="modal-category"></div>
+        <h2 id="modal-title"></h2>
+        <div id="modal-brand"></div>
+        <div id="modal-price"></div>
+        <div id="modal-rating"></div>
+        <div id="modal-stock"></div>
+        <p id="modal-description"></p>
+        <button id="modal-add-to-cart-button">Tambahkan ke Keranjang!</button>
+      </div>
     </div>
-
-</body>
-
+  </body>
 </html>
