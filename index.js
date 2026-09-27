@@ -30,6 +30,8 @@ logoutButton.addEventListener('click', function () {
 const PRODUCTS_API_URL = 'https://dummyjson.com/products';
 const productListContainer = document.getElementById('product-list');
 
+let allProducts = [];
+
 async function fetchProducts() {
     try {
         const response = await fetch(PRODUCTS_API_URL);
@@ -39,7 +41,8 @@ async function fetchProducts() {
         }
 
         const data = await response.json();
-        renderProducts(data.products);
+        allProducts = data.products;
+        renderProducts(allProducts);
     } catch (error) {
         console.error(error);
         productListContainer.innerHTML = `<p class="error-message">Gagal memuat produk. Silakan coba lagi nanti.</p>`;
@@ -66,3 +69,34 @@ function createProductCard(product) {
 }
 
 fetchProducts();
+
+// ===== Pencarian Real-Time (Debounce & Closures) =====
+
+function debounce(callback, delay) {
+    let timeoutId;
+
+    return function (...args) {
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(() => {
+            callback.apply(this, args);
+        }, delay);
+    };
+}
+
+function filterProducts(keyword) {
+    const lowerKeyword = keyword.toLowerCase().trim();
+
+    const filteredProducts = allProducts.filter(function (product) {
+        return product.title.toLowerCase().includes(lowerKeyword) ||
+            product.category.toLowerCase().includes(lowerKeyword);
+    });
+
+    renderProducts(filteredProducts);
+}
+
+const handleSearchInput = debounce(function (event) {
+    filterProducts(event.target.value);
+}, 400);
+
+const searchInput = document.getElementById('search-input');
+searchInput.addEventListener('input', handleSearchInput);
