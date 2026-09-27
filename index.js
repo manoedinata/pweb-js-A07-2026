@@ -45,6 +45,7 @@ async function fetchProducts() {
 
         const data = await response.json();
         allProducts = data.products;
+        populateCategoryFilter();
         renderProducts(allProducts);
     } catch (error) {
         console.error(error);
@@ -89,19 +90,8 @@ function debounce(callback, delay) {
     };
 }
 
-function filterProducts(keyword) {
-    const lowerKeyword = keyword.toLowerCase().trim();
-
-    const filteredProducts = allProducts.filter(function (product) {
-        return product.title.toLowerCase().includes(lowerKeyword) ||
-            product.category.toLowerCase().includes(lowerKeyword);
-    });
-
-    renderProducts(filteredProducts);
-}
-
-const handleSearchInput = debounce(function (event) {
-    filterProducts(event.target.value);
+const handleSearchInput = debounce(function () {
+    applyFiltersAndSort();
 }, 400);
 
 const searchInput = document.getElementById('search-input');
@@ -279,3 +269,59 @@ modalAddToCartButton.addEventListener('click', function () {
         addToCart(activeModalProductId);
     }
 });
+
+// ===== Filter & Sorting (Functional Programming) =====
+
+const categoryFilter = document.getElementById('category-filter');
+const sortSelect = document.getElementById('sort-select');
+
+function populateCategoryFilter() {
+    const categories = [...new Set(allProducts.map(function (product) {
+        return product.category;
+    }))];
+
+    const options = categories.map(function (category) {
+        return `<option value="${category}">${category}</option>`;
+    });
+
+    categoryFilter.innerHTML = `<option value="all">Semua Kategori</option>${options.join('')}`;
+}
+
+function sortProducts(products, sortOption) {
+    const sorted = [...products];
+
+    switch (sortOption) {
+        case 'price-asc':
+            return sorted.sort(function (a, b) { return a.price - b.price; });
+        case 'price-desc':
+            return sorted.sort(function (a, b) { return b.price - a.price; });
+        case 'rating-asc':
+            return sorted.sort(function (a, b) { return a.rating - b.rating; });
+        case 'rating-desc':
+            return sorted.sort(function (a, b) { return b.rating - a.rating; });
+        default:
+            return sorted;
+    }
+}
+
+function getFilteredAndSortedProducts() {
+    const keyword = searchInput.value.toLowerCase().trim();
+    const selectedCategory = categoryFilter.value;
+
+    const filtered = allProducts.filter(function (product) {
+        const matchesKeyword = product.title.toLowerCase().includes(keyword) ||
+            product.category.toLowerCase().includes(keyword);
+        const matchesCategory = selectedCategory === 'all' || product.category === selectedCategory;
+
+        return matchesKeyword && matchesCategory;
+    });
+
+    return sortProducts(filtered, sortSelect.value);
+}
+
+function applyFiltersAndSort() {
+    renderProducts(getFilteredAndSortedProducts());
+}
+
+categoryFilter.addEventListener('change', applyFiltersAndSort);
+sortSelect.addEventListener('change', applyFiltersAndSort);

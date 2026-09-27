@@ -28,6 +28,18 @@
         <section id="product-catalog">
             <div class="search-bar">
                 <input type="text" id="search-input" placeholder="Cari nama produk atau kategori...">
+
+                <select id="category-filter">
+                    <option value="all">Semua Kategori</option>
+                </select>
+
+                <select id="sort-select">
+                    <option value="default">Urutkan</option>
+                    <option value="price-asc">Harga: Termurah</option>
+                    <option value="price-desc">Harga: Termahal</option>
+                    <option value="rating-desc">Rating: Tertinggi</option>
+                    <option value="rating-asc">Rating: Terendah</option>
+                </select>
             </div>
 
             <div id="product-list" class="product-grid">
