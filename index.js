@@ -64,6 +64,7 @@ function createProductCard(product) {
             <div class="product-price">$${product.price}</div>
             <div class="product-rating">⭐ ${product.rating}</div>
             <div class="product-discount">-${product.discountPercentage}%</div>
+            <button class="add-to-cart-btn">Tambah ke Keranjang</button>
         </div>
     `;
 }
@@ -100,3 +101,87 @@ const handleSearchInput = debounce(function (event) {
 
 const searchInput = document.getElementById('search-input');
 searchInput.addEventListener('input', handleSearchInput);
+
+// ===== Keranjang Belanja Sederhana (Local Storage CRUD) =====
+
+const CART_STORAGE_KEY = 'cart';
+const cartBadge = document.getElementById('cart-badge');
+const cartTotal = document.getElementById('cart-total');
+
+function getCart() {
+    const storedCart = localStorage.getItem(CART_STORAGE_KEY);
+    return storedCart ? JSON.parse(storedCart) : [];
+}
+
+function saveCart(cart) {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+}
+
+function addToCart(productId) {
+    const product = allProducts.find(function (item) {
+        return item.id === productId;
+    });
+
+    if (!product) return;
+
+    const cart = getCart();
+    const existingItem = cart.find(function (item) {
+        return item.id === productId;
+    });
+
+    if (existingItem) {
+        existingItem.quantity += 1;
+    } else {
+        cart.push({
+            id: product.id,
+            title: product.title,
+            price: product.price,
+            thumbnail: product.thumbnail,
+            quantity: 1
+        });
+    }
+
+    saveCart(cart);
+    updateCartSummary();
+}
+
+function removeFromCart(productId) {
+    const cart = getCart().filter(function (item) {
+        return item.id !== productId;
+    });
+
+    if (cart.length > 0) {
+        saveCart(cart);
+    } else {
+        localStorage.removeItem(CART_STORAGE_KEY);
+    }
+
+    updateCartSummary();
+}
+
+function updateCartSummary() {
+    const cart = getCart();
+
+    const totalItems = cart.reduce(function (sum, item) {
+        return sum + item.quantity;
+    }, 0);
+
+    const totalPrice = cart.reduce(function (sum, item) {
+        return sum + (item.price * item.quantity);
+    }, 0);
+
+    cartBadge.textContent = totalItems;
+    cartTotal.textContent = `$${totalPrice.toFixed(2)}`;
+}
+
+productListContainer.addEventListener('click', function (event) {
+    const addToCartButton = event.target.closest('.add-to-cart-btn');
+    if (!addToCartButton) return;
+
+    const productCard = addToCartButton.closest('.product-card');
+    const productId = Number(productCard.dataset.id);
+
+    addToCart(productId);
+});
+
+updateCartSummary();
